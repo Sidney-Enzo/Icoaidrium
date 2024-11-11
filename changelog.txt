@@ -1,0 +1,9 @@
+# 0.2.6
+
+11/11/24
+
++ change camera moviment system
++ remove features like rotating and mirror
+
+* implementing chunking system
+* changing grid system
