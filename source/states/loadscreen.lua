@@ -16,7 +16,7 @@ end
 
 function loadscreen:draw()
     love.graphics.setColor(1, 1, 1, alph)
-    love.graphics.draw(icosaidriumIcon, halfScreenW, halfScreenH, 0, 2, 2, icosaidriumIcon:getWidth()/2, icosaidriumIcon:getHeight()/2)
+    love.graphics.draw(icosaidriumIcon, halfScreenW, halfScreenH, 0, 4, 4, icosaidriumIcon:getWidth()/2, icosaidriumIcon:getHeight()/2)
     love.graphics.setColor(1, 1, 1, 1)
 end
 
