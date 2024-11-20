@@ -1,6 +1,20 @@
 local editor = {}
 editor.id = ""
 
+function passBlock()
+    if spriteSelected < #sprites then
+        spriteSelected = spriteSelected + 1
+        print(spriteSelected)
+    end
+end
+
+function backBlock()
+    if spriteSelected > 1 then
+        spriteSelected = spriteSelected - 1
+        print(spriteSelected)
+    end
+end
+
 function editor:enter()
     undoRedo = require 'source/modules/undoRedo'
     UI = require 'source/modules/UI'
@@ -8,13 +22,15 @@ function editor:enter()
 
     editorCamera = camera.new(nil, nil, 1, 0)
     editorCamera.speed = 0.25
-    editorCamera.targetZoom = 1
 
     chunkSize = 4 -- blocks
 
-    sprites = { love.graphics.newImage('assets/images/defaultTexture.png') }
+    spriteSheet = love.graphics.newImage('assets/images/defaultTexture.png')
+    sprites = { love.graphics.newQuad(0, 0, 32, 32, spriteSheet) }
     spriteSelected = 1
 
+    buttonsTexture, buttonsQuads = love.graphics.getQuads("assets/images/themes/platinium.png", "assets/images/themes/platinium.json")
+    buttonsCurrentQuads = {1, 5, 3, 7, 9, 11, 13}
     local mx, my = editorCamera:mousePosition()
     mouseGridX = math.multiply(mx, meta.map.gridSize)
     mouseGridY = math.multiply(my, meta.map.gridSize)
@@ -26,39 +42,48 @@ function editor:draw()
     UI.showBlockOnMouse()
     UI.drawGrid()
     editorCamera:detach()
-    UI.displayInfo()
 end
 
 function editor:update(deltaTime)
-    editorCamera.scale = editorCamera.targetZoom
-    if love.mouse.isDown(1) then 
-        tools.primary(mouseGridX, mouseGridY, true)
-    elseif love.mouse.isDown(2) then
-        tools.secondary(mouseGridX, mouseGridY, true) 
+    UI.menuBar()
+    UI.displayInfo()
+    if slab.IsVoidHovered() then
+        if love.mouse.isDown(1) then 
+            tools.primary(mouseGridX, mouseGridY, true)
+        elseif love.mouse.isDown(2) then
+            tools.secondary(mouseGridX, mouseGridY, true) 
+        end
     end
+
     if love.keyboard.isDown('rctrl', 'z') then
         undoRedo:undo()
     elseif love.keyboard.isDown('rctrl', 'y') then
         undoRedo:redo()
     end
+
+    if love.keyboard.isDown('a') or love.keyboard.isDown('left') then
+        passBlock()
+    elseif love.keyboard.isDown('d') or love.keyboard.isDown('right') then
+        backBlock()
+    end
 end
 
 function editor:keypressed(k)
     if k == 'e' then
-        tools.changePrimary("erase")
+        tools.changePrimary('erase')
     elseif k == 'p' then
-        tools.changePrimary("pencil")
+        tools.changePrimary('pencil')
     elseif k == 'b' then
-        tools.changePrimary("bucket")
+        tools.changePrimary('bucket')
     elseif k == 'o' then
-        tools.changePrimary("blockPicker")
+        tools.changePrimary('blockPicker')
     elseif k == 'k' then
         tools.switch()
     end
 end
 
 function editor:wheelmoved(x, y)
-    editorCamera.targetZoom = math.clamp(0.5, editorCamera.targetZoom + math.sign(y)*editorCamera.speed, 3) -- zoom and zoom clamp
+    editorCamera.scale = math.clamp(0.5, editorCamera.scale + math.sign(y)*editorCamera.speed, 3) -- zoom and zoom clamp
 end
 
 function editor:mousemoved(x, y, dx, dy)

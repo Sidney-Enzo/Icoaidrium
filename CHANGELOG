@@ -8,40 +8,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 # [Unreleased] - 2024/11/11
 
 ### Added
- - pencil feature
- - erase feature
- - grid system
- - camera moviment system
- - camera zoom system
- - camera informations
- - Map informations
- - Block information
+  - pencil feature
+  - erase feature
+  - grid system
+  - camera moviment system
+  - camera zoom system
+  - camera informations
+  - Map informations
+  - Block information
 
 ### Developing
- - implementing chunking system
+  - implementing chunking system
 
 # [0.0.3] - 2024/14/11
 ### Added
- - delete block feature
- - undo feature
- - redo feature
+  - delete block feature
+  - undo feature
+  - redo feature
 
 ### Change
- - modularization undo and redo object(undoRedo)
- - modularization user interface (UI)
+  - modularization undo and redo object(undoRedo)
+  - modularization user interface (UI)
 
 ### Fixed
- - blocks index system
+  - blocks index system
 
 # [0.0.4] - 2024/20/11
 ### Added
- - bucket feature
- - block picker featuress
- - primary and secindary tool system
- - primary and secondary tool information 
- - switch tools
+  - bucket feature
+  - block picker featuress
+  - primary and secindary tool system
+  - primary and secondary tool information 
 
 ### Change
- - modularization (tools)
- - func names, createBlock -> pencil
- - func names, deleteBlock -> erase
+  - modularization (tools)
+  - func names, createBlock -> pencil
+  - func names, deleteBlock -> erase
+  - suit by slab (gui libary)
