@@ -2,11 +2,10 @@ local UI = {} -- modules like this are made expecif files, for exemple, this one
 
 function UI.drawBlocks()
     for i, chunk in ipairs(meta.map.chunks) do
-        -- love.graphics.rectangle('line', chunk.position[1], chunk.position[2], meta.map.gridSize*chunkSize, meta.map.gridSize*chunkSize)
         for y, row in ipairs(chunk.blocks) do
             for x, block in ipairs(row) do
                 if block > 0 then
-                    love.graphics.draw(sprites[block], chunk.position[1] + (x - 1)*meta.map.gridSize, chunk.position[2] + (y - 1)*meta.map.gridSize, 0, 1, 1, 0, 0)
+                    love.graphics.draw(sprites[block], chunk.position.x + (x - 1)*meta.map.gridSize, chunk.position.y + (y - 1)*meta.map.gridSize)
                 end
             end
         end
@@ -15,8 +14,10 @@ end
 
 function UI.showBlockOnMouse()
     love.graphics.setColor(1, 1, 1, 0.8)
-    love.graphics.draw(sprites[spriteSelected], mouseGridX, mouseGridY, 0, 1, 1, 0, 0)
-    love.graphics.setColor(1, 1, 1, 1)
+    if spriteSelected > 0 then
+        love.graphics.draw(sprites[spriteSelected], mouseGridX, mouseGridY)
+    end
+    love.graphics.setColor(1, 1, 1)
 end
 
 function UI.drawGrid()
@@ -30,6 +31,13 @@ function UI.drawGrid()
             love.graphics.rectangle('line', x, y, meta.map.gridSize, meta.map.gridSize)
         end
     end
+    -- love.graphics.setColor(0, 0, 1)
+    -- for i, chunk in ipairs(meta.map.chunks) do
+    --     love.graphics.rectangle('line', chunk.position.x, chunk.position.y, meta.map.gridSize*chunkSize, meta.map.gridSize*chunkSize)
+    -- end
+    -- love.graphics.setColor(1, 1, 1)
+    love.graphics.setColor(0, 1, 0)
+    love.graphics.rectangle('line', mouseGridX, mouseGridY, meta.map.gridSize, meta.map.gridSize)
     love.graphics.setColor(1, 1, 1, 1)
 end
 
@@ -41,13 +49,16 @@ function UI.displayInfo()
         "Map name: " .. meta.map.name,
         "Grid size: " .. meta.map.gridSize,
         "Sprite: " .. spriteSelected,
+        "Primary tool: " .. tools.primaryName,
+        "Secondary tool: " .. tools.secondaryName,
         "Zoom: " .. editorCamera.scale,
         "Camera, x: " .. editorCamera.x .. " Y: " .. editorCamera.y,
-        "FPS: " .. love.timer.getFPS()
+        "FPS: " .. love.timer.getFPS(),
+        -- "Memory usage: " .. collectgarbage('count')
     }
     love.graphics.setColor(1, 1, 1, 0.8)
     for i, info in ipairs(infosDisplay) do 
-        love.graphics.print(info, 16, 32 + i*phoenixBIOS32:getHeight(" "), 0, 1, 1, 0, 0) -- automaticly set the y position based on text size and position in the list
+        love.graphics.print(info, 16, 32 + i*phoenixBIOS32:getHeight(" ")) -- automaticly set the y position based on text size and position in the list
     end
     love.graphics.setColor(1, 1, 1, 1)
 end
